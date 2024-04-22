@@ -1,1 +1,33 @@
 /* You can add global styles to this file, and also import other style files */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@layer base {
+  body {
+    @apply bg-gray;
+  }
+  h1 {
+    @apply text-[56px] leading-[110%] tracking-[-1.12px] font-extrabold italic text-black md:text-[104px] md:tracking-[-2.08px];
+  }
+  h1 span {
+    @apply mr-2 text-purple text-[56px] leading-[110%] tracking-[-1.12px] font-extrabold italic md:text-[104px] md:tracking-[-2.08px];
+  }
+  label {
+    @apply text-[12px] font-bold tracking-[3px] uppercase text-grey md:text-[14px] md:tracking-[3.5px] leading-[150%];
+  }
+  input {
+    @apply px-4 py-3 text-[20px] tracking-[0.2px] leading-[30px] md:text-[32px] md:tracking-[0.32px] md:leading-[48px]  placeholder:text-black placeholder:opacity-50 text-black font-bold rounded-lg border border-line mt-2 focus:border-purple focus:caret-purple w-full md:max-w-[160px];
+  }
+  p {
+    @apply text-[12px] md:text-[14px] font-normal italic leading-[150%] text-red mt-2;
+  }
+}
+
+@layer components {
+  .ng-invalid.ng-touched {
+    @apply border-red
+  }
+
+}
