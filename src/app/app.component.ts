@@ -1,59 +1,113 @@
 import { Component, OnInit } from '@angular/core';
-import {
-  FormControl,
-  FormGroup,
-  Validators,
-  AbstractControl,
-  ValidationErrors,
-  FormBuilder,
-} from '@angular/forms';
-import { Age } from 'src/models/age.interface';
-import { ageSchema } from 'src/utils/schemaYup';
+import { Validators, FormBuilder } from '@angular/forms';
+import { isMonth } from './validators/month.validator';
+import { Age } from './models/age.interface';
+import { isDay } from './validators/day.validator';
+import { isValidYear } from './validators/year.validator';
+import { isValidDate } from './validators/date.validator';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent implements OnInit {
-  ageForm: FormGroup;
+export class AppComponent {
   age: Age = {
     days: '- -',
     months: '- -',
     years: '- -',
   };
-  constructor(private ageForm: FormBuilder) {}
-  yupValidator(control: FormControl) {
-  try {
-    ageSchema.validateSync(control.value);
-    return null;
-  } catch (error) {
-    return { yupError: error.errors };
-  }
-}
 
-  ngOnInit(): void {
-    this.ageForm = new FormGroup({
-      birthDay: new FormControl(null, [this.yupValidator]),
-      birthMonth: new FormControl(null, [this.yupValidator]),
-      birthYear: new FormControl(null, [this.yupValidator]),
-    });
-  }
-  getErrors(controlName: string): string[] {
-    const controlErrors = this.ageForm.get(controlName)?.errors;
-    if (!controlErrors) {
-      return [];
+  birthDateForm = this.fb.group(
+    {
+      day: ['', [Validators.required, Validators.pattern(/^-?[0-9]+$/), isDay]],
+      month: [
+        '',
+        [Validators.required, Validators.pattern(/^-?[0-9]+$/), isMonth],
+      ],
+      year: [
+        '',
+        [
+          Validators.required,
+          Validators.minLength(4),
+          Validators.pattern(/^-?[0-9]+$/),
+          isValidYear,
+        ],
+      ],
+    },
+    {
+      validators: [isValidDate],
     }
+  );
 
-    return Object.keys(controlErrors)
-      .map(
-        (key) =>
-          this.errorMessages[controlName][key as keyof FormControlError] ||
-          'An unknown error occurred'
-      )
-      .filter((message) => message !== undefined);
+  constructor(private fb: FormBuilder) {}
+  get birthDay() {
+    return this.birthDateForm.controls?.['day'];
   }
-
+  get birthMonth() {
+    return this.birthDateForm.controls?.['month'];
+  }
+  get birthYear() {
+    return this.birthDateForm.controls?.['year'];
+  }
   onSubmit() {
-    console.log(this.ageForm);
+    if (this.birthDateForm.valid) {
+      const year = Number(this.birthDateForm.controls?.['year'].value);
+      const month = Number(this.birthDateForm.controls?.['month'].value) - 1;
+      const day = Number(this.birthDateForm.controls?.['day'].value);
+      this.calculateAge(year, month, day);
+    } else {
+      console.log('☢️ error occurred');
+    }
+  }
+  calculateAge(year: number, month: number, day: number) {
+    const now = new Date();
+    let birthDate = new Date(year, month, day);
+    let years = now.getFullYear() - birthDate.getFullYear();
+    let months = now.getMonth() - birthDate.getMonth();
+    let days = now.getDate() - birthDate.getDate();
+
+    if (days < 0) {
+      const previousMonth = new Date(now.getFullYear(), now.getMonth(), 0);
+      days += previousMonth.getDate();
+      months--;
+    }
+    if (months < 0) {
+      months += 12;
+      years--;
+    }
+    this.age = {
+      days: days,
+      months: months,
+      years: years,
+    };
+  }
+  getAriaDescribedBy(field: string): string {
+    let ids = [];
+    const control = this.birthDateForm.get(field);
+    if (control?.errors && control.touched) {
+      if (control?.hasError('required')) {
+        ids.push(`${field}Error1`);
+      }
+      if (control?.hasError('pattern')) {
+        ids.push(`${field}Error2`);
+      }
+      if (
+        control?.hasError('isDay') ||
+        control?.hasError('isMonth') ||
+        control?.hasError('isValidYear')
+      ) {
+        ids.push(`${field}Error3`);
+      }
+      if (control?.hasError('minlength')) {
+        ids.push(`${field}Error4`);
+      }
+    }
+    if (
+      this.birthDateForm.errors?.['isValidDate'] &&
+      this.birthDateForm.dirty
+    ) {
+      ids.push('generalError');
+    }
+    return ids.join(' ');
   }
 }

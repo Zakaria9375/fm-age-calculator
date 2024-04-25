@@ -3,31 +3,35 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
+	*:focus {
+		@apply outline-1 outline-dashed outline-offset-8 outline-purple;
+	}
   body {
     @apply bg-gray;
   }
-  h1 {
-    @apply text-[56px] leading-[110%] tracking-[-1.12px] font-extrabold italic text-black md:text-[104px] md:tracking-[-2.08px];
+  h1, h1 span {
+    @apply text-[3.5rem] leading-[1.1] tracking-[-1.12px] font-extrabold italic text-black md:text-[6.5rem] md:tracking-[-2.08px];
   }
   h1 span {
-    @apply mr-2 text-purple text-[56px] leading-[110%] tracking-[-1.12px] font-extrabold italic md:text-[104px] md:tracking-[-2.08px];
+    @apply mr-2 text-purple;
   }
   label {
-    @apply text-[12px] font-bold tracking-[3px] uppercase text-grey md:text-[14px] md:tracking-[3.5px] leading-[150%];
+    @apply text-grey uppercase font-bold text-[0.75rem] tracking-[3px] md:text-[0.875rem] md:tracking-[3.5px] leading-[1.5];
   }
   input {
-    @apply px-4 py-3 text-[20px] tracking-[0.2px] leading-[30px] md:text-[32px] md:tracking-[0.32px] md:leading-[48px]  placeholder:text-black placeholder:opacity-50 text-black font-bold rounded-lg border border-line mt-2 focus:border-purple focus:caret-purple w-full md:max-w-[160px];
+    @apply text-black font-bold px-4 py-3 md:px-6 text-[1.25rem] tracking-[0.2px] leading-[1.5] md:text-[2rem] md:tracking-[0.32px] placeholder:text-[#15151550]  rounded-lg border border-line mt-2 focus:border-purple focus:caret-purple w-full md:max-w-[10rem] ; 
   }
   p {
-    @apply text-[12px] md:text-[14px] font-normal italic leading-[150%] text-red mt-2;
+    @apply text-[0.75rem] md:text-[0.875rem] font-normal italic leading-[150%] text-red mt-2;
   }
 }
 
 @layer components {
-  .ng-invalid.ng-touched {
+  .input-error {
     @apply border-red
   }
-
+	.label-error {
+		@apply text-red;
+	}
 }

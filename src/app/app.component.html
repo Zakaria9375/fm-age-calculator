@@ -1,46 +1,175 @@
-<main class="mx-4 mt-[88px] md:mt-[171px]">
-  <div class="mx-auto bg-white px-6 py-12 rounded-3xl rounded-br-[100px] md:p-14 md:rounded-br-[200px] max-w-[840px]">
-    <section>
-      <form (ngSubmit)="onSubmit()" [formGroup]="ageForm" class="">
-        <div class="flex space-x-4 md:space-x-8">
-          <div class="max-w-[160px]">
-            <label for="day">Day</label>
-            <input type="text" id="day" formControlName="birthDay" name="day" placeholder="DD" maxlength="2">
-            <p *ngIf="!ageForm.get('birthDay')?.valid && ageForm.get('birthDay')?.touched">
-              <ng-container *ngFor="let error of getErrors('birthDay')">{{error}}</ng-container>
-            </p>
-          </div>
-          <div class="max-w-[160px]">
-            <label for="month">Month</label>
-            <input type="text" id="month" formControlName="birthMonth" name="month" placeholder="MM" maxlength="2">
-            <p *ngIf="!ageForm.get('birthMonth')?.valid && ageForm.get('birthMonth')?.touched">
-              <ng-container *ngFor="let error of getErrors('birthMonth')">{{error}}</ng-container>
-            </p>
-          </div>
-          <div class="max-w-[160px]">
-            <label for="year">Year</label>
-            <input type="text" id="year" formControlName="birthYear" name="year" placeholder="YYYY" maxlength="4">
-            <p *ngIf="!ageForm.get('birthYear')?.valid && ageForm.get('birthYear')?.touched">
-              <ng-container *ngFor="let error of getErrors('birthYear')">{{error}}</ng-container>
-            </p>
-          </div>
+<div class="mx-4 my-[88px] md:mt-[171px] md:mb-[138px]">
+  <div
+    class="mx-auto bg-white px-6 py-12 rounded-3xl rounded-br-[100px] md:p-14 md:rounded-br-[200px] max-w-[52.5rem]"
+  >
+    <form (ngSubmit)="onSubmit()" [formGroup]="birthDateForm"  aria-label="Calculate age from birth date">
+      <div class="flex space-x-4 md:space-x-8">
+        <div class="max-w-[10rem]">
+          <label
+            for="day"
+            [class.label-error]="birthDay.errors && birthDay.touched"
+            >Day</label
+          >
+          <input
+            type="text"
+            id="day"
+            formControlName="day"
+            placeholder="DD"
+            maxlength="2"
+						aria-required="true"
+            [class.input-error]="birthDay.errors && birthDay.touched"
+						[attr.aria-describedby]="getAriaDescribedBy('day')"
+          />
+          <p
+            *ngIf="birthDay.errors?.['required'] && birthDay.touched"
+            aria-live="polite"
+						id="dayError1"
+          >
+            Field is required
+          </p>
+          <p
+            *ngIf="birthDay.errors?.['pattern'] && birthDay.dirty"
+            aria-live="polite"
+						id="dayError2"
+          >
+            Must be numbers
+          </p>
+          <p
+            *ngIf="birthDay.errors?.['isDay'] && birthDay.dirty && !birthDay.errors?.['pattern'] && !birthDay.errors?.['required']"
+            aria-live="polite"
+						aria-describedby="dayError3"
+          >
+            Must be a valid day
+          </p>
         </div>
-        <div class="my-8 md:my-0 flex justify-center md:justify-end after:content-[''] after:w-full after:absolute relative after:border after:border-line after:bottom-[50%]">
-          <button type="submit" class="relative z-10 size-16 md:size-24 rounded-full bg-purple flex justify-center items-center hover:bg-black">
-            <svg xmlns="http://www.w3.org/2000/svg" width="46" height="44" viewBox="0 0 46 44">
-              <g fill="none" stroke="#FFF" stroke-width="2">
-                <path d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44" />
-              </g>
-            </svg>
-          </button>
+        <div class="max-w-[10rem]">
+          <label
+            for="month"
+            [class.label-error]="birthMonth.errors && birthMonth.touched"
+            >Month</label
+          >
+          <input
+            type="text"
+            formControlName="month"
+            placeholder="MM"
+            maxlength="2"
+            id="month"
+						aria-required="true"
+            [class.input-error]="birthMonth.errors && birthMonth.touched"
+						[attr.aria-describedby]="getAriaDescribedBy('month')"
+          />
+          <p
+            *ngIf="birthMonth.errors?.['required'] && birthMonth.touched"
+            aria-live="polite"
+						id="monthError1"
+          >
+            Field is required
+          </p>
+          <p
+            *ngIf="birthMonth.errors?.['pattern'] && birthMonth.dirty"
+            aria-live="polite"
+						id="monthError2"
+          >
+            Must be numbers
+          </p>
+          <p
+            *ngIf="birthMonth.errors?.['isMonth'] && birthMonth.dirty && !birthMonth.errors?.['pattern'] && !birthMonth.errors?.['required']"
+            aria-live="polite"
+						id="monthError3"
+          >
+            Must be a valid month
+          </p>
         </div>
-
-      </form>
-    </section>
-    <section>
-      <h1><span>{{ age.years }}</span>years</h1>
-      <h1><span>{{age.months}}</span>months</h1>
-      <h1><span>{{age.days}}</span>days</h1>
+        <div class="max-w-[10rem]">
+          <label
+            for="year"
+            [class.label-error]="birthYear.errors && birthYear.touched"
+            >Year</label
+          >
+          <input
+            type="text"
+            formControlName="year"
+            placeholder="YYYY"
+            maxlength="4"
+            id="year"
+						aria-required="true"
+            [class.input-error]="birthYear.errors && birthYear.touched"
+						[attr.aria-describedby]="getAriaDescribedBy('year')"
+          />
+          <p
+            *ngIf="birthYear.errors?.['required'] && birthYear.touched"
+            aria-live="polite"
+						id="yearError1"
+          >
+            Field is required
+          </p>
+          <p
+            *ngIf="birthYear.errors?.['minlength'] && !birthYear.errors?.['required'] && birthYear.touched"
+            aria-live="polite"
+						id="yearError4"
+          >
+            Must be 4 digits
+          </p>
+          <p
+            *ngIf="birthYear.errors?.['pattern'] && birthYear.dirty"
+            aria-live="polite"
+						id="yearError2"
+          >
+            Must be numbers
+          </p>
+          <p
+            *ngIf="birthYear.errors?.['isValidYear'] && birthYear.dirty && !birthYear.errors?.['pattern'] && !birthYear.errors?.['required']"
+            aria-live="polite"
+						id="yearError3"
+          >
+            Must be in the past
+          </p>
+          <p
+            *ngIf="birthDateForm.errors?.['isValidDate'] && birthDateForm.dirty && !birthYear.errors"
+            aria-live="true"
+						id="generalError"
+          >
+            Must be a valid date
+          </p>
+        </div>
+      </div>
+      <div
+        class="my-8 md:my-0 flex justify-center md:justify-end after:content-[''] after:w-full after:absolute relative after:border after:border-line after:bottom-[50%]"
+      >
+        <button
+          type="submit"
+          class="relative z-10 size-16 md:size-24 rounded-full bg-purple flex justify-center items-center hover:bg-black"
+          aria-label="Submit"
+					title="Submit"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="46"
+            height="44"
+            viewBox="0 0 46 44"
+          >
+            <g fill="none" stroke="#FFF" stroke-width="2">
+              <path
+                d="M1 22.019C8.333 21.686 23 25.616 23 44M23 44V0M45 22.019C37.667 21.686 23 25.616 23 44"
+              />
+            </g>
+          </svg>
+        </button>
+      </div>
+    </form>
+    <section aria-label="Calculated age" aria-live="polite">
+      <h1>
+        <span >{{ age.years }}</span
+        >years
+      </h1>
+      <h1>
+        <span>{{ age.months }}</span
+        >months
+      </h1>
+      <h1>
+        <span>{{ age.days }}</span
+        >days
+      </h1>
     </section>
   </div>
-</main>
+</div>
