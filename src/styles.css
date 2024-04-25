@@ -20,7 +20,7 @@
     @apply text-grey uppercase font-bold text-[0.75rem] tracking-[3px] md:text-[0.875rem] md:tracking-[3.5px] leading-[1.5];
   }
   input {
-    @apply text-black font-bold px-4 py-3 md:px-6 text-[1.25rem] tracking-[0.2px] leading-[1.5] md:text-[2rem] md:tracking-[0.32px] placeholder:text-[#15151550]  rounded-lg border border-line mt-2 focus:border-purple focus:caret-purple w-full md:max-w-[10rem] ; 
+    @apply text-black font-bold px-4 py-3 md:px-6 text-[1.25rem] tracking-[0.2px] leading-[1.5] md:text-[2rem] md:tracking-[0.32px] placeholder:text-[#15151575]  rounded-lg border border-line mt-2 focus:border-purple focus:caret-purple w-full md:max-w-[10rem] ; 
   }
   p {
     @apply text-[0.75rem] md:text-[0.875rem] font-normal italic leading-[150%] text-red mt-2;
