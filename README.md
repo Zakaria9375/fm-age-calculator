@@ -54,7 +54,7 @@ This application has been tested extensively for accessibility, including:
 
 ## About the Author
 
-* Portfolio - [Zakaria Ali](https://zaportfolio.com/)
+* Portfolio - [Zakaria Ali](https://zaportfolio.netlify.app/)
 * Frontend Mentor Profile - [@Zakaria9375](https://www.frontendmentor.io/profile/Zakaria9375)
 * Project by - [Frontend Mentor team](https://www.frontendmentor.io/)
 
